@@ -1,0 +1,27 @@
+{
+  "name": "nodejsmysql",
+  "version": "0.0.0",
+  "description": "simple template for MySQL implement in nodejs",
+  "main": "classMySQL.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/El-Chapo0133/nodejsMySQL.git"
+  },
+  "keywords": [
+    "nodejs",
+    "MySQL",
+    "template"
+  ],
+  "author": "Loris Levêque",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/El-Chapo0133/nodejsMySQL/issues"
+  },
+  "homepage": "https://github.com/El-Chapo0133/nodejsMySQL#readme",
+  "devDependencies": {
+    "@types/node": "^12.12.4"
+  }
+}
