@@ -4,7 +4,9 @@
 /// Description : Template for nodejs
 ///               for MySQL implement
 ///               class form
-
+///
+///
+/** Next step : change this to setup multiple database connection */
 const DATABASE = {
     "host": "",
     "databaseName": "",
@@ -14,6 +16,7 @@ const DATABASE = {
 
 class MyDB {
     private mysql = require('mysql');
+    private connector = null;
     /** ########################################################### */
     /** Private functions */
     private log(message):void {
@@ -22,43 +25,88 @@ class MyDB {
         throw(message);
     }
     /// return :any, because i don't know the mysql class type :(
-    private getConnector():any {
-        return this.mysql.createConnexion({
-            host: DATABASE.host,
-            database: DATABASE.databaseName,
-            user: DATABASE.username,
-            password: DATABASE.password
-        })
+    private createConnector(callback):any {
+        if (this.isNull(this.connector)) {
+            this.connector = this.mysql.createConnexion({
+                host: DATABASE.host,
+                database: DATABASE.databaseName,
+                user: DATABASE.username,
+                password: DATABASE.password
+            })
+            callback();
+        } else {
+            this.log("connector already created");
+        }
     }
     /// <summary>
     /// connect the app to the database with the mysql connector
     /// </summary>
-    private connect(connector):void {
+    private connect():void {
         try {
-            connector.connect((err) => {
+            this.connector.connect((err) => {
                 if (err) {
-                    this.log(err)
+                    this.log(err);
                 } else {
                     /** the connexion's allright :) */
                 }
             })
         } catch (ex) {
-            this.log(ex)
+            this.log(ex);
+        }
+    }
+    private isConnexionOn(connector):boolean {
+        return connector.state;
+    }
+    private isNull(thing):boolean {
+        if (thing == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    private executeQuery(query, callback):void {
+        this.connector.query(query, (err, result) => {
+            this.endQuery(err, result, callback);
+        })
+    }
+    private endQuery(err, result, callback):void {
+        if (err) {
+            this.log(err);
+        } else {
+            callback(result);
         }
     }
     /** ########################################################### */
     /** Public functions */
     public startConnexion():void {
-        this.connect(this.getConnector())
+        this.createConnector(() => {
+            this.connect();
+        });
     }
     public stopConnexion() {
-        
+        if (this.isNull(this.connector)) {
+            this.log("connector is already [null]");
+        } else {
+            this.connector = null;
+        }
     }
-    public executeQuery(query):void {
-
+    public fullExecuteQuery(query, callback):void {
+        if (this.isNull(this.connector)) {
+            this.executeQuery(query, callback);
+        } else {
+            this.log("connector is [null]");
+        }
     }
     public getConnexionStatus() {
-
+        if (this.isConnexionOn(this.connector)) {
+            return String(this.connector.state);
+        } else {
+            return "connector not created/connected";
+        }
+    }
+    public clone():MyDB {
+        var myDB = this;
+        return myDB;
     }
 }
-module.exports = new MyDB()
+module.exports = new MyDB();
