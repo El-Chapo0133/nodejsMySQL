@@ -55,7 +55,11 @@ class MyDB {
         }
     }
     private isConnexionOn(connector):boolean {
-        return connector.state;
+        if (connector.state === "connected") {
+            return true;
+        } else {
+            return false;
+        }
     }
     private isNull(thing):boolean {
         if (thing == null) {
@@ -83,7 +87,7 @@ class MyDB {
             this.connect();
         });
     }
-    public stopConnexion() {
+    public stopConnexion():void {
         if (this.isNull(this.connector)) {
             this.log("connector is already [null]");
         } else {
@@ -97,7 +101,7 @@ class MyDB {
             this.log("connector is [null]");
         }
     }
-    public getConnexionStatus() {
+    public getConnexionStatus():string {
         if (this.isConnexionOn(this.connector)) {
             return String(this.connector.state);
         } else {
