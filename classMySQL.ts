@@ -112,5 +112,14 @@ class MyDB {
         var myDB = this;
         return myDB;
     }
+    /// return 0 if closed nicely, return 1 if any error
+    public close():number {
+        try {
+            this.connector.end()
+            return 0
+        } catch(ex) {
+            return 1
+        }
+    }
 }
 module.exports = new MyDB();

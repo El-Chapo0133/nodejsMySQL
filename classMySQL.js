@@ -60,7 +60,12 @@ var MyDB = /** @class */ (function () {
         }
     };
     MyDB.prototype.isConnexionOn = function (connector) {
-        return connector.state;
+        if (connector.state === "connected") {
+            return true;
+        }
+        else {
+            return false;
+        }
     };
     MyDB.prototype.isNull = function (thing) {
         if (thing == null) {
@@ -119,6 +124,16 @@ var MyDB = /** @class */ (function () {
     MyDB.prototype.clone = function () {
         var myDB = this;
         return myDB;
+    };
+    /// return 0 if closed nicely, return 1 if any error
+    MyDB.prototype.close = function () {
+        try {
+            this.connector.end();
+            return 0;
+        }
+        catch (ex) {
+            return 1;
+        }
     };
     return MyDB;
 }());
