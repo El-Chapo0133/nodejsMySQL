@@ -1,4 +1,4 @@
-/// Type        : JS
+/// Type        : TS
 /// Author      : Loris Levêque
 /// Date        : 1.11.2019
 /// Description : Template for nodejs
@@ -56,18 +56,10 @@ class MyDB {
         }
     }
     private isConnexionOn(connector :any):boolean {
-        if (connector.state === "connected") {
-            return true;
-        } else {
-            return false;
-        }
+        return connector.state === "connected"
     }
     private isNull(input :any):boolean {
-        if (input === null) {
-            return true;
-        } else {
-            return false;
-        }
+        return input === null
     }
     private async executeQuery(query):Promise<any> {
         this.connector.query(query, (err, result) => {
@@ -171,32 +163,16 @@ class DataFromDB {
         }
     }
     private checkAttribute(input :any) {
-        if (!this.isAFunction(input) && !this.isNull(input) && !this.isUndefined(input)) {
-            return true;
-        } else {
-            return false;
-        }
+        return (!this.isAFunction(input) && !this.isNull(input) && !this.isUndefined(input));
     }
     private isAFunction(input :any) :boolean {
-        if (typeof(input) === "function") {
-            return true;
-        } else {
-            return false;
-        }
+        return typeof(input) === "function"
     }
     private isNull(input :any) :boolean {
-        if (input === null) {
-            return true;
-        } else {
-            return false;
-        }
+        return input === null
     }
     private isUndefined(input :any) :boolean {
-        if (typeof(input) === "undefined") {
-            return true;
-        } else {
-            return false;
-        }
+        return typeof(input) === "undefined"
     }
 }
 
